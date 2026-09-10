@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COPS Bellevue — Senior Care Professionals Network</title>
+<meta name="description" content="Since 1973, COPS has connected senior care professionals across Bellevue through education and patient advocacy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #1A2B3C;
+    --navy2: #22364A;
+    --navy3: #2D4560;
+    --gold: #C4963A;
+    --gold2: #D4A84B;
+    --cream: #FAF8F4;
+    --cream2: #F2EFE8;
+    --white: #FFFFFF;
+    --text: #2C3E50;
+    --muted: #5C6E7F;
+    --border: rgba(26,43,60,0.1);
+    --display: 'Playfair Display', serif;
+    --body: 'Source Sans 3', sans-serif;
+    --nav-h: 80px;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0.75rem 2rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    background: rgba(26,43,60,0.97); backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--gold);
+  }
+  .nav-logo { display: flex; align-items: center; cursor: pointer; text-decoration: none; flex-shrink: 0; }
+  .nav-logo img { height: 52px; width: auto; display: block; }
+  .nav-links { display: flex; gap: 0; list-style: none; flex-wrap: wrap; }
+  .nav-links a {
+    font-family: var(--body); font-size: 0.78rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.7); cursor: pointer; text-decoration: none;
+    padding: 0.4rem 0.9rem; transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+  .nav-cta {
+    font-family: var(--body); font-size: 0.78rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 0.5rem 1.2rem; background: var(--gold); color: var(--navy);
+    border: none; cursor: pointer; text-decoration: none; transition: background 0.2s; white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--gold2); }
+  .nav-toggle {
+    display: none; width: 42px; height: 42px; background: transparent;
+    border: 1px solid rgba(255,255,255,0.3); cursor: pointer;
+    flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  }
+  .nav-toggle span { display: block; width: 18px; height: 2px; background: var(--white); transition: transform 0.2s, opacity 0.2s; }
+  nav.open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  nav.open .nav-toggle span:nth-child(2) { opacity: 0; }
+  nav.open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* HERO */
+  #hero-section {
+    min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    padding-top: var(--nav-h); overflow: hidden;
+  }
+  .hero-left {
+    background: var(--navy); padding: 5rem 3rem 4rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .hero-eyebrow {
+    font-family: var(--body); font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.25em; color: var(--gold);
+    margin-bottom: 1.25rem;
+  }
+  .hero-title {
+    font-family: var(--display); font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 1.25rem;
+  }
+  .hero-sub { font-size: 1rem; color: rgba(255,255,255,0.65); font-weight: 300; line-height: 1.75; margin-bottom: 2rem; max-width: 440px; }
+  .hero-meta {
+    display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item { display: flex; flex-direction: column; }
+  .hero-meta-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--gold); }
+  .hero-meta-val { font-family: var(--display); font-size: 1rem; color: var(--white); }
+  .hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .btn-gold { font-family: var(--body); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.75rem 1.75rem; background: var(--gold); color: var(--navy); border: none; cursor: pointer; text-decoration: none; transition: background 0.2s; display: inline-block; }
+  .btn-gold:hover { background: var(--gold2); }
+  .btn-outline-white { font-family: var(--body); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.75rem 1.75rem; background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.3); cursor: pointer; text-decoration: none; transition: border-color 0.2s; display: inline-block; }
+  .btn-outline-white:hover { border-color: rgba(255,255,255,0.6); }
+  .hero-right { position: relative; overflow: hidden; }
+  .hero-right img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-right-overlay { position: absolute; inset: 0; background: linear-gradient(to right, var(--navy) 0%, transparent 30%); }
+  .hero-limited { position: absolute; bottom: 2rem; right: 2rem; background: var(--gold); color: var(--navy); padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-eyebrow { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.25em; color: var(--gold); margin-bottom: 0.75rem; }
+  .section-title { font-family: var(--display); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--navy); line-height: 1.15; margin-bottom: 1.25rem; }
+  .section-desc { font-size: 1rem; color: var(--muted); font-weight: 300; line-height: 1.8; max-width: 600px; }
+
+  /* HOME CARDS */
+  .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .home-card { background: var(--white); border: 1px solid var(--border); padding: 2rem; border-top: 3px solid var(--gold); }
+  .home-card-title { font-family: var(--display); font-size: 1.2rem; font-weight: 600; color: var(--navy); margin-bottom: 0.75rem; }
+  .home-card-text { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+  .home-card-items { list-style: none; }
+  .home-card-items li { font-size: 0.85rem; color: var(--text); padding: 0.4rem 0; border-top: 1px solid var(--border); display: flex; align-items: flex-start; gap: 8px; }
+  .home-card-items li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+  .link-arrow { font-size: 0.82rem; font-weight: 600; color: var(--gold); text-decoration: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.08em; display: inline-flex; align-items: center; gap: 4px; }
+  .link-arrow:hover { color: var(--navy); }
+
+  /* AGENDA */
+  .agenda { list-style: none; }
+  .agenda-item { display: flex; gap: 1.5rem; padding: 1rem 0; border-top: 1px solid var(--border); align-items: flex-start; }
+  .agenda-time { font-family: var(--display); font-size: 1rem; font-weight: 600; color: var(--gold); min-width: 50px; flex-shrink: 0; }
+  .agenda-title { font-size: 0.9rem; font-weight: 600; color: var(--navy); }
+  .agenda-desc { font-size: 0.82rem; color: var(--muted); }
+
+  /* STATS */
+  .stats-row { display: flex; gap: 0; margin-top: 2rem; flex-wrap: wrap; }
+  .stat-item { flex: 1; min-width: 120px; padding: 2rem 1.5rem; background: var(--navy); text-align: center; }
+  .stat-num { font-family: var(--display); font-size: 2.8rem; font-weight: 700; color: var(--gold); line-height: 1; }
+  .stat-label { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); margin-top: 6px; }
+
+  /* CTA BANNER */
+  .cta-banner { background: var(--navy); padding: 4rem 2rem; text-align: center; }
+  .cta-banner .section-title { color: var(--white); }
+  .cta-banner .section-desc { color: rgba(255,255,255,0.6); margin: 0 auto 2rem; }
+
+  /* EVENT PAGE */
+  .event-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; margin-top: 3rem; align-items: start; }
+  .event-meta-card { background: var(--navy); padding: 2rem; }
+  .event-meta-item { padding: 1rem 0; border-top: 1px solid rgba(255,255,255,0.1); }
+  .event-meta-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 4px; }
+  .event-meta-val { font-family: var(--display); font-size: 1rem; color: var(--white); }
+  .event-meta-sub { font-size: 0.82rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .topics-list { list-style: none; margin-top: 1rem; }
+  .topics-list li { font-size: 0.9rem; color: var(--text); padding: 0.5rem 0; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; }
+  .topics-list li::before { content: '→'; color: var(--gold); flex-shrink: 0; }
+  .rsvp-btns { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+  .rsvp-btns .btn-gold { text-align: center; }
+  .event-meta-card .btn-outline-navy { color: var(--white); border-color: rgba(255,255,255,0.4); }
+  .event-meta-card .btn-outline-navy:hover { background: rgba(255,255,255,0.08); }
+  .btn-navy { font-family: var(--body); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.75rem 1.5rem; background: var(--navy); color: var(--white); border: none; cursor: pointer; text-decoration: none; transition: background 0.2s; display: block; text-align: center; }
+  .btn-navy:hover { background: var(--navy3); }
+  .btn-outline-navy { font-family: var(--body); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.75rem 1.5rem; background: transparent; color: var(--navy); border: 1px solid var(--navy); cursor: pointer; text-decoration: none; transition: background 0.2s; display: block; text-align: center; }
+  .btn-outline-navy:hover { background: var(--cream2); }
+
+  /* MEMBERSHIP */
+  .member-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; align-items: start; }
+  .member-grid > div { min-width: 0; }
+  .membership-benefits { list-style: none; margin: 1.5rem 0; }
+  .membership-benefits li { font-size: 0.95rem; padding: 0.6rem 0; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+  .membership-benefits li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .steps-join { counter-reset: steps; list-style: none; margin: 1.5rem 0; }
+  .steps-join li { counter-increment: steps; font-size: 0.9rem; color: var(--text); padding: 0.75rem 0; border-top: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start; }
+  .steps-join li::before { content: counter(steps); background: var(--gold); color: var(--navy); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+  .steps-join a { color: var(--gold); font-weight: 600; }
+  .steps-join a:hover { color: var(--navy); }
+
+  /* DIRECTORY TABLE */
+  .dir-table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.85rem; }
+  .dir-table th { background: var(--navy); color: var(--white); padding: 0.75rem 1rem; text-align: left; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+  .dir-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); color: var(--text); }
+  .dir-table tr:nth-child(even) td { background: var(--cream2); }
+  .dir-table a { color: var(--gold); text-decoration: none; }
+  .dir-table a:hover { text-decoration: underline; }
+
+  /* SPONSORSHIP */
+  .sponsor-benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 2rem; }
+  .sponsor-benefit { background: var(--white); border: 1px solid var(--border); padding: 1.5rem; border-top: 3px solid var(--gold); }
+  .benefit-num { font-family: var(--display); font-size: 1.8rem; color: var(--gold); opacity: 0.4; margin-bottom: 0.5rem; }
+  .benefit-title { font-family: var(--display); font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+  .benefit-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+  .sponsor-price-box { background: var(--navy); padding: 2.5rem; margin-top: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+  .sponsor-price-amount { font-family: var(--display); font-size: 3.5rem; color: var(--gold); }
+  .sponsor-price-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* ARCHIVE */
+  .archive-list { list-style: none; margin-top: 2rem; column-count: 2; column-gap: 2rem; }
+  .archive-item { break-inside: avoid; padding: 0.6rem 0; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+  .archive-speaker { font-size: 0.82rem; font-weight: 600; color: var(--navy); flex-shrink: 0; min-width: 160px; }
+  .archive-topic { font-size: 0.82rem; color: var(--muted); }
+
+  /* BOARD */
+  .board-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+  .board-card { background: var(--white); border: 1px solid var(--border); padding: 1.75rem; text-align: center; }
+  .board-avatar { width: 60px; height: 60px; border-radius: 50%; background: var(--navy); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-family: var(--display); font-size: 1.2rem; font-weight: 700; color: var(--gold); }
+  .board-role { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: var(--gold); margin-bottom: 4px; }
+  .board-name { font-family: var(--display); font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+  .board-org { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.75rem; }
+  .board-contact { display: flex; flex-direction: column; gap: 4px; }
+  .board-contact a { font-size: 0.78rem; color: var(--gold); text-decoration: none; word-break: break-word; }
+  .board-contact a:hover { text-decoration: underline; }
+
+  /* FOOTER */
+  footer { background: var(--navy); padding: 3rem 2rem 1.5rem; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .footer-logo { display: inline-block; margin-bottom: 1rem; }
+  .footer-logo img { height: 84px; width: auto; display: block; }
+  .footer-tagline { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.65; }
+  .footer-col-title { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 1rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-links a { font-size: 0.85rem; color: rgba(255,255,255,0.55); text-decoration: none; cursor: pointer; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-links span { font-size: 0.85rem; color: rgba(255,255,255,0.55); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+  .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+
+  /* EMAIL POPUP */
+  .mail-modal { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1.25rem; }
+  .mail-modal[hidden] { display: none; }
+  .mail-backdrop { position: absolute; inset: 0; background: rgba(26,43,60,0.6); }
+  .mail-box { position: relative; width: 100%; max-width: 400px; background: var(--white); border-top: 3px solid var(--gold); padding: 2rem 1.75rem 1.75rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .mail-close { position: absolute; top: 0.5rem; right: 0.6rem; background: none; border: none; font-size: 1.7rem; line-height: 1; color: var(--muted); cursor: pointer; padding: 0.25rem 0.5rem; }
+  .mail-close:hover { color: var(--navy); }
+  .mail-title { font-family: var(--display); font-size: 1.35rem; font-weight: 600; color: var(--navy); margin-bottom: 0.35rem; padding-right: 2rem; }
+  .mail-addr { font-size: 0.95rem; color: var(--text); word-break: break-all; user-select: all; }
+  .mail-subject { font-size: 0.82rem; color: var(--muted); margin-top: 0.25rem; }
+  .mail-actions { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.5rem; }
+  .mail-actions .btn-gold { display: block; text-align: center; }
+  .mail-actions button { width: 100%; }
+
+  @media (max-width: 980px) {
+    .nav-toggle { display: flex; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; flex-wrap: nowrap;
+      background: var(--navy); border-bottom: 2px solid var(--gold); padding: 0.5rem 0;
+    }
+    nav.open .nav-links { display: flex; }
+    .nav-links a { display: block; padding: 0.85rem 2rem; font-size: 0.85rem; }
+  }
+  @media (max-width: 768px) {
+    :root { --nav-h: 70px; }
+    nav { padding: 0.75rem 1.25rem; }
+    .nav-logo img { height: 44px; }
+    .nav-links a { padding: 0.85rem 1.25rem; }
+    #hero-section { grid-template-columns: 1fr; }
+    .hero-left { padding: 3.5rem 1.5rem 3rem; }
+    .hero-right { height: 250px; }
+    .event-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .member-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .archive-list { column-count: 1; }
+    .footer-top { grid-template-columns: 1fr; gap: 1.5rem; }
+    section { padding: 3.5rem 1.25rem; }
+    .sponsor-price-box { padding: 2rem 1.5rem; }
+  }
+  @media (max-width: 380px) {
+    .nav-cta { padding: 0.5rem 0.75rem; font-size: 0.7rem; }
+    .nav-logo img { height: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a class="nav-logo" href="#home" data-page="home" aria-label="COPS home"><img src="data:image/png;base64,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" alt="COPS — Coordinators of Patient Services"></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#event" data-page="event">Upcoming Event</a></li>
+    <li><a href="#about" data-page="about">About</a></li>
+    <li><a href="#membership" data-page="membership">Membership</a></li>
+    <li><a href="#sponsorship" data-page="sponsorship">Sponsorship</a></li>
+    <li><a href="#archive" data-page="archive">Archive</a></li>
+    <li><a href="#board" data-page="board">Board</a></li>
+  </ul>
+  <div class="nav-right">
+    <a class="nav-cta" href="#membership" data-page="membership">Join Network</a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div id="hero-section">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Wednesday · May 20th · 11:30 AM</div>
+      <h1 class="hero-title">Lunch &amp; Resident's Rights.</h1>
+      <p class="hero-sub">Featuring Amy Freeman, Washington State Ombudsman Attorney, on housing protections and the legislative impacts shaping independent living.</p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Where</span>
+          <span class="hero-meta-val">Tutta Bella, Bellevue</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Seats</span>
+          <span class="hero-meta-val">Limited to 40</span>
+        </div>
+      </div>
+      <div class="hero-btns">
+        <a class="btn-gold" href="#event" data-page="event">Register Now</a>
+        <a class="btn-outline-white" href="#membership" data-page="membership">Become a Member</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="https://images.unsplash.com/photo-1758518730037-a16581a040e8?fm=jpg&q=80&w=1200&auto=format&fit=crop" alt="Business professionals in a meeting around a table">
+      <div class="hero-right-overlay"></div>
+      <div class="hero-limited">Limited to 40 Seats</div>
+    </div>
+  </div>
+
+  <section style="background:var(--white);">
+    <div class="container">
+      <div class="section-eyebrow">Est. 1973</div>
+      <h2 class="section-title">A volunteer network built on<br>education and patient advocacy.</h2>
+      <p class="section-desc">COPS is a volunteer organization founded in 1973 by a group of hospital-based professionals. COPS is now attended by many diverse disciplines — from vendors, case managers, and agencies, to care providers and housing companies. Our purpose for meeting is to build relationships, share knowledge of our services to support and facilitate patient advocacy, and provide educational presentations for professional development.</p>
+      <div class="home-grid">
+        <div class="home-card">
+          <div class="home-card-title">Our Purpose</div>
+          <p class="home-card-text">Building relationships and sharing knowledge to support patient advocacy and professional development.</p>
+          <a class="link-arrow" href="#about" data-page="about">Read our full story →</a>
+        </div>
+        <div class="home-card">
+          <div class="home-card-title">Program Agenda</div>
+          <ul class="home-card-items">
+            <li>11:30 — Registration / Doors open</li>
+            <li>12:00 — Introductions / Welcome from board</li>
+            <li>12:10 — Sponsor Spotlight (5 mins)</li>
+            <li>12:15 — Guest Speaker (40 min + Q&A)</li>
+            <li>1:00 — Adjourn / Optional gathering</li>
+          </ul>
+        </div>
+        <div class="home-card">
+          <div class="home-card-title">Membership Benefits</div>
+          <p class="home-card-text">Renew your 2026 membership to reserve your seat at our bi-monthly luncheons and access training recordings.</p>
+          <ul class="home-card-items">
+            <li>Post-meeting recordings access</li>
+            <li>Full member directory</li>
+            <li>Priority RSVP for limited seats</li>
+          </ul>
+          <a class="link-arrow" style="margin-top:1rem;display:inline-flex;" href="#membership" data-page="membership">Renew Membership →</a>
+        </div>
+        <div class="home-card">
+          <div class="home-card-title">Meeting Sponsor — $300 / event</div>
+          <p class="home-card-text">Exclusive high-visibility exposure to our network of 40+ senior care professionals.</p>
+          <ul class="home-card-items">
+            <li>5-Minute Spotlight Speaking slot</li>
+            <li>Logo on all meeting communications</li>
+            <li>Prime marketing table placement</li>
+          </ul>
+          <a class="link-arrow" style="margin-top:1rem;display:inline-flex;" href="#sponsorship" data-page="sponsorship">Become a Sponsor →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <div class="container" style="text-align:center;">
+      <div class="section-eyebrow" style="text-align:center;">Join Our Network</div>
+      <h2 class="section-title" style="color:var(--white);text-align:center;">A network of senior care professionals.</h2>
+      <p class="section-desc" style="color:rgba(255,255,255,0.6);margin:0 auto 2rem;">Building relationships and sharing knowledge to support patient advocacy and professional development through education since 1973.</p>
+      <a class="btn-gold" href="#membership" data-page="membership">Become a Member</a>
+    </div>
+  </div>
+</div>
+
+<!-- EVENT PAGE -->
+<div class="page" id="page-event">
+  <section style="padding-top:7rem;background:var(--white);">
+    <div class="container">
+      <div class="section-eyebrow">Wednesday · May 20th · 11:30 AM</div>
+      <h1 class="section-title">Lunch &amp; a Little Learning</h1>
+      <p class="section-desc">With Amy Freeman, Washington State Ombudsman Attorney, on Resident's Rights and the legislative landscape shaping senior housing.</p>
+      <div class="event-grid">
+        <div>
+          <div class="event-meta-card">
+            <div class="event-meta-item" style="border-top:none;padding-top:0;">
+              <div class="event-meta-label">When</div>
+              <div class="event-meta-val">Wednesday, May 20th</div>
+              <div class="event-meta-sub">11:30 AM</div>
+            </div>
+            <div class="event-meta-item">
+              <div class="event-meta-label">Where</div>
+              <div class="event-meta-val">Tutta Bella Neapolitan Pizzeria</div>
+              <div class="event-meta-sub">15600 NE 8th St Suite J1, Bellevue, WA 98008</div>
+            </div>
+            <div class="event-meta-item">
+              <div class="event-meta-label">Speaker</div>
+              <div class="event-meta-val">Amy Freeman</div>
+              <div class="event-meta-sub">Washington State Ombudsman Attorney</div>
+            </div>
+            <div class="rsvp-btns">
+              <a class="btn-gold" href="https://www.eventbrite.com/o/coordinator-of-patient-services-cops-4299893021" target="_blank" rel="noopener">Register / RSVP on Eventbrite</a>
+              <a class="btn-outline-navy" href="mailto:angied543@yahoo.com?subject=COPS%20Luncheon%20Registration" data-name="Angela Decker">Email Registration</a>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h2 class="section-title" style="font-size:1.6rem;">This Month's Topics</h2>
+          <ul class="topics-list">
+            <li>Resident's Rights</li>
+            <li>Housing protections in Washington State</li>
+            <li>Discharge and eviction requirements</li>
+            <li>Common compliance risks and how to prevent them</li>
+            <li>Key issues currently impacting seniors</li>
+          </ul>
+          <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;margin:1.5rem 0;">This is essential education for anyone working in senior care. Given current legislative discussions, Amy will briefly address <strong>HB 2114</strong> and rent cap considerations — specifically how this may impact independent living residents within mixed assisted living and senior housing communities under the Residential Landlord-Tenant Act.</p>
+
+          <h3 style="font-family:var(--display);font-size:1.2rem;color:var(--navy);margin-bottom:0.75rem;">Agenda</h3>
+          <ul class="agenda">
+            <li class="agenda-item"><span class="agenda-time">11:30</span><div><div class="agenda-title">Open Registration</div></div></li>
+            <li class="agenda-item"><span class="agenda-time">12:00</span><div><div class="agenda-title">Introductions</div></div></li>
+            <li class="agenda-item"><span class="agenda-time">12:10</span><div><div class="agenda-title">Sponsor Spotlight</div><div class="agenda-desc">5 minutes</div></div></li>
+            <li class="agenda-item"><span class="agenda-time">12:15</span><div><div class="agenda-title">Speaker Presentation + Q&A</div><div class="agenda-desc">40 minutes</div></div></li>
+            <li class="agenda-item"><span class="agenda-time">1:00</span><div><div class="agenda-title">Meeting adjourns</div><div class="agenda-desc">1:00–2:00 optional</div></div></li>
+          </ul>
+
+          <p style="font-size:0.88rem;color:var(--muted);margin-top:1.5rem;padding:1rem;background:var(--cream2);border-left:3px solid var(--gold);line-height:1.7;">In-person seating is limited to 40 attendees. Members will also have access via Zoom, as well as access to the training recording afterward. Renew your membership now to reserve your spot.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="cta-banner">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title" style="color:var(--white);">Join our network of senior care professionals.</h2>
+      <p class="section-desc" style="color:rgba(255,255,255,0.6);margin:0 auto 2rem;">Building relationships and sharing knowledge to support patient advocacy and professional development through education since 1973.</p>
+      <a class="btn-gold" href="#membership" data-page="membership">Become a Member</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="page-about">
+  <section style="padding-top:7rem;background:var(--white);">
+    <div class="container">
+      <div class="section-eyebrow">Est. 1973 · Bellevue, WA</div>
+      <h1 class="section-title">A network built on trust,<br>education, and care for seniors.</h1>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.8;max-width:700px;font-weight:300;margin-bottom:2rem;">COPS is a volunteer organization founded in 1973 by a group of hospital-based professionals. COPS is now attended by many diverse disciplines — from vendors, case managers, and agencies, to care providers and housing companies.</p>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.8;max-width:700px;font-weight:300;margin-bottom:2rem;">Our purpose for meeting is to build relationships, share knowledge of our services to support and facilitate patient advocacy, and provide educational presentations for professional development.</p>
+      <p style="font-size:1rem;color:var(--muted);line-height:1.8;max-width:700px;font-weight:300;">COPS meets every other month on the 3rd Wednesday. Anyone is welcome to attend, so feel free to share this invitation with others. We also welcome your suggestions for future guest speakers and any additions to the mailing list.</p>
+
+      <h2 class="section-title" style="margin-top:2.5rem;font-size:1.6rem;">53 years of Professional Development and Education</h2>
+
+      <!-- Open question: board flagged the "16+ Member Organizations" stat as possibly looking too small.
+           Left in place for now — confirm with board whether to keep, rework, or remove. -->
+      <div class="stats-row" style="margin-top:1.5rem;">
+        <div class="stat-item"><div class="stat-num">53</div><div class="stat-label">Years of Community</div></div>
+        <div class="stat-item"><div class="stat-num">16+</div><div class="stat-label">Member Organizations</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-eyebrow">Questions or Speaker Suggestions?</div>
+      <h2 class="section-title">Have a question or<br>speaker suggestion?</h2>
+      <p class="section-desc" style="margin-bottom:2rem;">Reach out to our board — we welcome new attendees, future speakers, and additions to our mailing list.</p>
+      <a class="btn-gold" href="#board" data-page="board">Contact the Board</a>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title" style="color:var(--white);">Join our network of senior care professionals.</h2>
+      <p class="section-desc" style="color:rgba(255,255,255,0.6);margin:0 auto 2rem;">Building relationships and sharing knowledge to support patient advocacy and professional development through education since 1973.</p>
+      <a class="btn-gold" href="#membership" data-page="membership">Become a Member</a>
+    </div>
+  </div>
+</div>
+
+<!-- MEMBERSHIP PAGE -->
+<div class="page" id="page-membership">
+  <section style="padding-top:7rem;background:var(--white);">
+    <div class="container">
+      <div class="section-eyebrow">2026 Membership</div>
+      <h1 class="section-title">Join a community of<br>senior care professionals.</h1>
+      <p class="section-desc">Members enjoy priority RSVP access to every luncheon (seating is first-come, first-served), training recordings, and inclusion in our 2026 directory.</p>
+
+      <div class="member-grid">
+        <div>
+          <h2 style="font-family:var(--display);font-size:1.4rem;color:var(--navy);margin-bottom:0.75rem;">Membership Benefits</h2>
+          <ul class="membership-benefits">
+            <li>Priority seating at all bi-monthly luncheons (first-come, first-served)</li>
+            <li>Access to recorded training sessions</li>
+            <li>Listing in the official 2026 member directory</li>
+            <li>Eligible to sponsor meetings and present in our bi-monthly newsletter</li>
+            <li>Voting input on future speaker topics — and anyone, member or not, is welcome to suggest a speaker or topic</li>
+          </ul>
+
+          <h2 style="font-family:var(--display);font-size:1.4rem;color:var(--navy);margin:2rem 0 0.75rem;">How to Join</h2>
+          <ol class="steps-join">
+            <li><span>Visit <a href="https://www.eventbrite.com/o/coordinator-of-patient-services-cops-4299893021" target="_blank" rel="noopener">Coordinators of Patient Services on Eventbrite</a> for the next upcoming event.</span></li>
+            <li>Click "Get Tickets."</li>
+            <li>Purchase the Annual Membership Ticket for 2026.</li>
+            <li>Confirm receipt with our Registration Officer to be added to the directory.</li>
+          </ol>
+          <a class="btn-gold" href="mailto:angied543@yahoo.com?subject=COPS%202026%20Membership%20Registration" data-name="Angela Decker" style="margin-top:1rem;display:inline-block;">Email Registration</a>
+        </div>
+        <div>
+          <h2 style="font-family:var(--display);font-size:1.4rem;color:var(--navy);margin-bottom:0.75rem;">2026 Member Directory</h2>
+          <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;">16 active member organizations</p>
+          <div style="overflow-x:auto;">
+            <table class="dir-table">
+              <thead>
+                <tr><th>Organization</th><th>Name</th><th>Contact</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Aegis Living</td><td>Lisa Bjorklund</td><td><a href="mailto:Lisa.Bjorklund@aegisliving.com">Email</a> · 509-731-3665</td></tr>
+                <tr><td>Aegis Living</td><td>Belinda Gay</td><td><a href="mailto:belinda.gay@aegisliving.com">Email</a> · 425-900-4624</td></tr>
+                <tr><td>Aegis Living Marymoor</td><td>Gwen Hoover</td><td><a href="mailto:gwen.hoover@aegisliving.com">Email</a> · 425-445-2453</td></tr>
+                <tr><td>Elite Care Northwest</td><td>Hannah Lahrson</td><td><a href="mailto:hannah@elitecarenorthwest.com">Email</a> · 206-929-3776</td></tr>
+                <tr><td>Gentiva Hospice</td><td>Mary Pope</td><td><a href="mailto:mary.pope@gentivahs.com">Email</a> · 425-677-1623</td></tr>
+                <tr><td>Interim HealthCare of Bellevue</td><td>Esther Cooper</td><td><a href="mailto:ecooper@interimhealthcare.com">Email</a> · 425-472-9917</td></tr>
+                <tr><td>Merrill Gardens at Renton Centre</td><td>Talace Huish-Pope</td><td><a href="mailto:talacehui@merrillgardens.com">Email</a> · 360-865-1347</td></tr>
+                <tr><td>Options for Seniors</td><td>Heidi Sheldon</td><td><a href="mailto:heidi@optionsforseniors.com">Email</a> · 425-827-0894</td></tr>
+                <tr><td>Personal Assistant to Seniors</td><td>Angela Decker</td><td><a href="mailto:angied543@yahoo.com">Email</a> · 206-351-8466</td></tr>
+                <tr><td>Radiant Mourning</td><td>Maureen Kures</td><td><a href="mailto:maureen@radiantmourning.com">Email</a> · 425-765-0661</td></tr>
+                <tr><td>Senior Tech Foundation</td><td>Ashlyn Sidhu</td><td><a href="mailto:ashlyn@yourseniortech.com">Email</a> · 253-617-5848</td></tr>
+                <tr><td>Silver Age</td><td>Ami Reischman</td><td><a href="mailto:ami@silveragecare.com">Email</a></td></tr>
+                <tr><td>SYNERGY HomeCare of Bellevue</td><td>Matt Gruits</td><td><a href="mailto:mattgruits@synergyhomecare.com">Email</a> · 425-462-5300</td></tr>
+                <tr><td>SYNERGY HomeCare of Bellevue</td><td>Bill Merriman</td><td><a href="mailto:billmerriman@synergyhomecare.com">Email</a> · 425-462-5300</td></tr>
+                <tr><td>The Key Home Care</td><td>Matthew Spahn</td><td><a href="mailto:matthew.spahn@thekey.com">Email</a> · 206-743-4677</td></tr>
+                <tr><td>Transforming Age</td><td>Robin Haley</td><td><a href="mailto:rhaley@transformingage.org">Email</a> · 206-200-1259</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="cta-banner">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title" style="color:var(--white);">Join our network of senior care professionals.</h2>
+      <a class="btn-gold" href="https://www.eventbrite.com/o/coordinator-of-patient-services-cops-4299893021" target="_blank" rel="noopener">Get Your Membership on Eventbrite</a>
+    </div>
+  </div>
+</div>
+
+<!-- SPONSORSHIP PAGE -->
+<div class="page" id="page-sponsorship">
+  <section style="padding-top:7rem;background:var(--white);">
+    <div class="container">
+      <div class="section-eyebrow">Sponsorship</div>
+      <h1 class="section-title">Shine in front of an engaged<br>senior care audience.</h1>
+      <p class="section-desc">For an investment of $300, your organization receives exclusive, high-visibility exposure to our network of professionals — and a direct opportunity to connect, engage, and build meaningful relationships.</p>
+
+      <div class="sponsor-price-box">
+        <div>
+          <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.2em;color:var(--gold);margin-bottom:4px;">Investment</div>
+          <div class="sponsor-price-amount">$300 <span style="font-size:1.5rem;">/event</span></div>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-top:4px;">Sponsorship is a members-only benefit. We meet the 3rd Wednesday in Jan, March, May, July, Sept, and Nov.</p>
+        </div>
+        <a class="btn-gold" href="mailto:rhaley@transformingage.org?subject=COPS%20Sponsorship%20Inquiry" data-name="Robin Haley">Inquire with Robin Haley</a>
+      </div>
+
+      <div class="sponsor-benefits">
+        <div class="sponsor-benefit">
+          <div class="benefit-num">01</div>
+          <div class="benefit-title">Spotlight Speaking Opportunity</div>
+          <p class="benefit-desc">Five minutes with the group's full attention to share your company's story, highlight your services, and showcase what makes you stand out.</p>
+        </div>
+        <div class="sponsor-benefit">
+          <div class="benefit-num">02</div>
+          <div class="benefit-title">Branded Recognition on All Communications</div>
+          <p class="benefit-desc">Your logo will appear on every outgoing meeting reminder, keeping your organization top-of-mind with our members long before the luncheon begins.</p>
+        </div>
+        <div class="sponsor-benefit">
+          <div class="benefit-num">03</div>
+          <div class="benefit-title">Prime Marketing Table Placement</div>
+          <p class="benefit-desc">A dedicated space to display your materials, connect with attendees, and engage one-on-one throughout the event.</p>
+        </div>
+        <div class="sponsor-benefit">
+          <div class="benefit-num">04</div>
+          <div class="benefit-title">Premium Visual Exposure</div>
+          <p class="benefit-desc">Set up your standing marketing banner near the front of the room for continued visibility from start to finish.</p>
+        </div>
+        <div class="sponsor-benefit">
+          <div class="benefit-num">05</div>
+          <div class="benefit-title">Fun Branded Giveaways</div>
+          <p class="benefit-desc">Place your branded items at each attendee's seat — about 40+ professionals per luncheon — so everyone leaves with your name in hand.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:2.5rem;padding:2rem;background:var(--cream2);border-left:3px solid var(--gold);">
+        <h3 style="font-family:var(--display);font-size:1.2rem;color:var(--navy);margin-bottom:1rem;">Next Steps</h3>
+        <ol class="steps-join">
+          <li><span>Go to <a href="https://www.eventbrite.com/o/coordinator-of-patient-services-cops-4299893021" target="_blank" rel="noopener">Coordinators of Patient Services' next event on Eventbrite</a>.</span></li>
+          <li>Click "Get Tickets."</li>
+          <li>Purchase your Annual Membership Ticket if you haven't yet — sponsorship is a members-only benefit.</li>
+          <li>Purchase a Sponsorship Ticket for your preferred meeting month.</li>
+          <li><span>Email <a href="mailto:rhaley@transformingage.org?subject=COPS%20Sponsorship%20%E2%80%94%20Logo%20and%20Preferred%20Months" data-name="Robin Haley">rhaley@transformingage.org</a> with your company logo (JPG) and preferred sponsorship months.</span></li>
+        </ol>
+        <p style="font-size:0.8rem;color:var(--muted);margin-top:1rem;">*We sometimes adjust November depending on Thanksgiving.</p>
+      </div>
+    </div>
+  </section>
+  <div class="cta-banner">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title" style="color:var(--white);">Join our network of senior care professionals.</h2>
+      <a class="btn-gold" href="#membership" data-page="membership">Become a Member</a>
+    </div>
+  </div>
+</div>
+
+<!-- ARCHIVE PAGE -->
+<div class="page" id="page-archive">
+  <section style="padding-top:7rem;background:var(--white);">
+    <div class="container">
+      <div class="section-eyebrow">Five Decades of Education</div>
+      <h1 class="section-title">Speaker &amp; Topic Archive</h1>
+      <p class="section-desc" style="margin-bottom:2rem;">Browse the topics our community has explored — from clinical research and ethics to communication, financial planning, and senior fraud prevention.</p>
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem;">109 of 109 topics</p>
+      <ul class="archive-list">
+        <li class="archive-item"><span class="archive-speaker">Amy Freeman, Lawyer</span><span class="archive-topic">Guardianship abuse, Senior Rights</span></li>
+        <li class="archive-item"><span class="archive-speaker">David Bucher</span><span class="archive-topic">Nature of Suffering and Futility</span></li>
+        <li class="archive-item"><span class="archive-speaker">Danna Beal</span><span class="archive-topic">How to manage problems and egos in the workplace</span></li>
+        <li class="archive-item"><span class="archive-speaker">Mike Prill</span><span class="archive-topic">Identity Theft</span></li>
+        <li class="archive-item"><span class="archive-speaker">Marsha Botzer / David Haack</span><span class="archive-topic">Caring for LGBT Seniors</span></li>
+        <li class="archive-item"><span class="archive-speaker">Stacie Anderson</span><span class="archive-topic">Getting Organized at Work and at Home</span></li>
+        <li class="archive-item"><span class="archive-speaker">Relta Gray</span><span class="archive-topic">The Independent Elderly</span></li>
+        <li class="archive-item"><span class="archive-speaker">JR Gillespie</span><span class="archive-topic">Insurance Options</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Maura Scanlan</span><span class="archive-topic">Naturopathic Vitamins & Supplements</span></li>
+        <li class="archive-item"><span class="archive-speaker">Ben Coffman</span><span class="archive-topic">Inspirational Leadership</span></li>
+        <li class="archive-item"><span class="archive-speaker">Lisa Voso</span><span class="archive-topic">Communication</span></li>
+        <li class="archive-item"><span class="archive-speaker">Tim Bovey</span><span class="archive-topic">Financial Forecasting</span></li>
+        <li class="archive-item"><span class="archive-speaker">Terry Hershey</span><span class="archive-topic">Creating Sanctuary, Power of Pause</span></li>
+        <li class="archive-item"><span class="archive-speaker">Microsoft</span><span class="archive-topic">Protecting Seniors from Fraud</span></li>
+        <li class="archive-item"><span class="archive-speaker">James Alberson</span><span class="archive-topic">10 ways salespeople blow sales</span></li>
+        <li class="archive-item"><span class="archive-speaker">Shirley Alleyne</span><span class="archive-topic">Updates re: Medicaid and COPES</span></li>
+        <li class="archive-item"><span class="archive-speaker">Edwards Jones</span><span class="archive-topic">Outsmart the Scammers</span></li>
+        <li class="archive-item"><span class="archive-speaker">Vivian Curry</span><span class="archive-topic">The Eden Alternative</span></li>
+        <li class="archive-item"><span class="archive-speaker">Tim Bovey</span><span class="archive-topic">Long Term Care Insurance</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Stennis Watson</span><span class="archive-topic">Aging & Memory: What's normal, what's not</span></li>
+        <li class="archive-item"><span class="archive-speaker">Joan McGinnis</span><span class="archive-topic">Elderhealth — Understanding family dynamics</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Haritha Vankireddy</span><span class="archive-topic">Sleep disorders / dementia</span></li>
+        <li class="archive-item"><span class="archive-speaker">Andrew Tartella</span><span class="archive-topic">Medicare</span></li>
+        <li class="archive-item"><span class="archive-speaker">Jeanne Karr</span><span class="archive-topic">Professional Boundaries of Caregiving</span></li>
+        <li class="archive-item"><span class="archive-speaker">Jim Grazko</span><span class="archive-topic">Healthcare Reform</span></li>
+        <li class="archive-item"><span class="archive-speaker">Tracey Warren</span><span class="archive-topic">Ready, Set, Grow</span></li>
+        <li class="archive-item"><span class="archive-speaker">Stephen Allar (DSHS)</span><span class="archive-topic">Medicaid Changes</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Hank Williams</span><span class="archive-topic">Healthy Aging</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Angela Hanson</span><span class="archive-topic">Habits to Prevent Dementia</span></li>
+        <li class="archive-item"><span class="archive-speaker">Karen Kent</span><span class="archive-topic">Helping the Depressed Older Adult</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Marcus Kupers</span><span class="archive-topic">Vitamins and Herbs in Medicine</span></li>
+        <li class="archive-item"><span class="archive-speaker">BBB</span><span class="archive-topic">Don't get Scammed: How to protect Seniors</span></li>
+        <li class="archive-item"><span class="archive-speaker">Julianne Kocer</span><span class="archive-topic">Life Planning Elder Law</span></li>
+        <li class="archive-item"><span class="archive-speaker">Lisa Voso</span><span class="archive-topic">The Art of making a Great 1st Impression</span></li>
+        <li class="archive-item"><span class="archive-speaker">Michael Godfrey</span><span class="archive-topic">Gay and Gray</span></li>
+        <li class="archive-item"><span class="archive-speaker">Gary Kemper</span><span class="archive-topic">Pre-Planning (Dignity Memorial)</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Peter Hashisaki</span><span class="archive-topic">Infectious Diseases</span></li>
+        <li class="archive-item"><span class="archive-speaker">Trudy James</span><span class="archive-topic">Speaking of Dying</span></li>
+        <li class="archive-item"><span class="archive-speaker">Nancy Werner</span><span class="archive-topic">Someone Googled You — Now what?</span></li>
+        <li class="archive-item"><span class="archive-speaker">David Haack</span><span class="archive-topic">Modern Aging</span></li>
+        <li class="archive-item"><span class="archive-speaker">ProWest & SHIBA</span><span class="archive-topic">An Overview of Medicare</span></li>
+        <li class="archive-item"><span class="archive-speaker">Better Business Bureau</span><span class="archive-topic">Schemes and Scams</span></li>
+        <li class="archive-item"><span class="archive-speaker">Karen Kent</span><span class="archive-topic">Hoarding</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Teng</span><span class="archive-topic">Senior Care and Depression</span></li>
+        <li class="archive-item"><span class="archive-speaker">James Knoll</span><span class="archive-topic">Five Wishes</span></li>
+        <li class="archive-item"><span class="archive-speaker">Death with Dignity Panel</span><span class="archive-topic">Panel discussion</span></li>
+        <li class="archive-item"><span class="archive-speaker">Lauren Glickman</span><span class="archive-topic">Compassion Fatigue</span></li>
+        <li class="archive-item"><span class="archive-speaker">Summit Research</span><span class="archive-topic">Mental Health & Cascade Behavioral Health</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Haleh Nekoorad-Long</span><span class="archive-topic">The 3 D's: Dementia, Depression, Delusion</span></li>
+        <li class="archive-item"><span class="archive-speaker">Nikki Rausch</span><span class="archive-topic">Buying Signals</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Michael Bobala</span><span class="archive-topic">Alzheimer's research, A cure in sight</span></li>
+        <li class="archive-item"><span class="archive-speaker">Linda Sosdo</span><span class="archive-topic">Prevention of Falls</span></li>
+        <li class="archive-item"><span class="archive-speaker">Leanne Finlay</span><span class="archive-topic">Laughter and Play to Manage Stress</span></li>
+        <li class="archive-item"><span class="archive-speaker">Tim Bovey</span><span class="archive-topic">Financial planning re: senior housing</span></li>
+        <li class="archive-item"><span class="archive-speaker">Eastside Domestic Violence</span><span class="archive-topic">Elder Abuse</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. John Gibson</span><span class="archive-topic">Family Conflict Communication</span></li>
+        <li class="archive-item"><span class="archive-speaker">Tim Bovey</span><span class="archive-topic">Reverse Mortgages and LTC Policies</span></li>
+        <li class="archive-item"><span class="archive-speaker">Keith Klovee-Smith</span><span class="archive-topic">Aging in Place</span></li>
+        <li class="archive-item"><span class="archive-speaker">Lori Wada (SHIBA)</span><span class="archive-topic">Insurance Changes</span></li>
+        <li class="archive-item"><span class="archive-speaker">Stephanie Mehl</span><span class="archive-topic">Dispelling Myths (Providence Hospice)</span></li>
+        <li class="archive-item"><span class="archive-speaker">Leanne Plancic</span><span class="archive-topic">Social Security Benefits</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Tina Huang</span><span class="archive-topic">Latest research on dementia & Alzheimer's</span></li>
+        <li class="archive-item"><span class="archive-speaker">Jeri Howe</span><span class="archive-topic">Music-thanatologist</span></li>
+        <li class="archive-item"><span class="archive-speaker">Terry Hershey</span><span class="archive-topic">Wisdom to notice extraordinary everyday life</span></li>
+        <li class="archive-item"><span class="archive-speaker">Tim Bovey</span><span class="archive-topic">Financial Security</span></li>
+        <li class="archive-item"><span class="archive-speaker">Andrew Tartella, DSHS</span><span class="archive-topic">Medicare and You</span></li>
+        <li class="archive-item"><span class="archive-speaker">Lisa Voso</span><span class="archive-topic">Persuasive Persuasion</span></li>
+        <li class="archive-item"><span class="archive-speaker">Kathleen Steele</span><span class="archive-topic">The Family Love Letter</span></li>
+        <li class="archive-item"><span class="archive-speaker">Gail Wolz</span><span class="archive-topic">Humor Therapy</span></li>
+        <li class="archive-item"><span class="archive-speaker">Bellevue Mediation</span><span class="archive-topic">Conflict resolution</span></li>
+        <li class="archive-item"><span class="archive-speaker">Sharon Lacey</span><span class="archive-topic">Funny thing Happened on the way to Dementia</span></li>
+        <li class="archive-item"><span class="archive-speaker">Tony Ventrella</span><span class="archive-topic">Overcoming Life's Challenges</span></li>
+        <li class="archive-item"><span class="archive-speaker">Mary Galvin</span><span class="archive-topic">Bridge Ministries for Disability Concerns</span></li>
+        <li class="archive-item"><span class="archive-speaker">Noel Chrisman</span><span class="archive-topic">Cultural Competence: approaches to the diverse patient</span></li>
+        <li class="archive-item"><span class="archive-speaker">Patricia Hunter, WA LTC</span><span class="archive-topic">House Bill 1281</span></li>
+        <li class="archive-item"><span class="archive-speaker">Dr. Stetcher</span><span class="archive-topic">Cancer Treatment Navigator</span></li>
+      </ul>
+    </div>
+  </section>
+  <div class="cta-banner">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title" style="color:var(--white);">Join our network of senior care professionals.</h2>
+      <a class="btn-gold" href="#membership" data-page="membership">Become a Member</a>
+    </div>
+  </div>
+</div>
+
+<!-- BOARD PAGE -->
+<div class="page" id="page-board">
+  <section style="padding-top:7rem;background:var(--white);">
+    <div class="container">
+      <div class="section-eyebrow">The Volunteer Board</div>
+      <h1 class="section-title">Board of Directors</h1>
+      <p class="section-desc" style="margin-bottom:2.5rem;">Dedicated professionals serving the Bellevue senior care community.</p>
+      <div class="board-grid">
+        <div class="board-card">
+          <div class="board-avatar">HS</div>
+          <div class="board-role">President</div>
+          <div class="board-name">Heidi Sheldon</div>
+          <div class="board-org">Options for Seniors</div>
+          <div class="board-contact">
+            <a href="tel:4258270894">(425) 827-0894</a>
+            <a href="mailto:heidi@optionsforseniors.com">heidi@optionsforseniors.com</a>
+          </div>
+        </div>
+        <!-- TODO: Board photos to be added once supplied -->
+        <div class="board-card">
+          <div class="board-avatar">?</div>
+          <div class="board-role">Secretary</div>
+          <div class="board-name">Name TBD</div>
+          <div class="board-org">Organization TBD</div>
+          <div class="board-contact"></div>
+        </div>
+        <div class="board-card">
+          <div class="board-avatar">?</div>
+          <div class="board-role">Vice-President / Treasurer</div>
+          <div class="board-name">Name TBD</div>
+          <div class="board-org">Organization TBD</div>
+          <div class="board-contact"></div>
+        </div>
+        <div class="board-card">
+          <div class="board-avatar">AD</div>
+          <div class="board-role">Registration</div>
+          <div class="board-name">Angela Decker</div>
+          <div class="board-org">Personal Assistant to Seniors</div>
+          <div class="board-contact">
+            <a href="tel:2063518466">(206) 351-8466</a>
+            <a href="mailto:angied543@yahoo.com">angied543@yahoo.com</a>
+          </div>
+        </div>
+        <div class="board-card">
+          <div class="board-avatar">RH</div>
+          <div class="board-role">Sponsorship</div>
+          <div class="board-name">Robin Haley</div>
+          <div class="board-org">Transforming Age</div>
+          <div class="board-contact">
+            <a href="tel:2062001259">(206) 200-1259</a>
+            <a href="mailto:rhaley@transformingage.org">rhaley@transformingage.org</a>
+          </div>
+        </div>
+        <div class="board-card">
+          <div class="board-avatar">MG</div>
+          <div class="board-role">Education / Ambassador Officer</div>
+          <div class="board-name">Matthew Gruits</div>
+          <div class="board-org">SYNERGY HomeCare of Bellevue</div>
+          <div class="board-contact">
+            <a href="tel:4252954959">(425) 295-4959</a>
+            <a href="mailto:mattgruits@synergyhomecare.com">mattgruits@synergyhomecare.com</a>
+          </div>
+        </div>
+        <div class="board-card">
+          <div class="board-avatar">AS</div>
+          <div class="board-role">Digital Media Officer</div>
+          <div class="board-name">Ashlyn Sidhu</div>
+          <div class="board-org">Your Senior Tech</div>
+          <div class="board-contact">
+            <a href="tel:2536175848">(253) 617-5848</a>
+            <a href="mailto:ashlyn@yourseniortech.com">ashlyn@yourseniortech.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="cta-banner">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title" style="color:var(--white);">Join our network of senior care professionals.</h2>
+      <a class="btn-gold" href="#membership" data-page="membership">Become a Member</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <a class="footer-logo" href="#home" data-page="home" aria-label="COPS home"><img src="data:image/png;base64,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" alt="COPS — Coordinators of Patient Services"></a>
+        <p class="footer-tagline">Coordinators of Patient Services. A volunteer network of senior care professionals serving Bellevue and the Greater Seattle area since 1973. Professional · Educational · Friendly.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Explore</div>
+        <ul class="footer-links">
+          <li><a href="#event" data-page="event">Upcoming Event</a></li>
+          <li><a href="#about" data-page="about">About COPS</a></li>
+          <li><a href="#sponsorship" data-page="sponsorship">Sponsorship</a></li>
+          <li><a href="#archive" data-page="archive">Speaker Archive</a></li>
+          <li><a href="#board" data-page="board">Contact Board</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Get in Touch</div>
+        <ul class="footer-links">
+          <li><a href="#board" data-page="board">Bellevue COPS</a></li>
+          <li><span>Bellevue, Washington</span></li>
+          <li><a href="mailto:Bellevuecops@gmail.com?subject=COPS%20Inquiry" data-name="COPS">Bellevuecops@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Coordinators of Patient Services · Professional · Educational · Friendly</p>
+    </div>
+  </div>
+</footer>
+
+<!-- EMAIL POPUP: works whether or not the visitor has a mail app set up -->
+<div class="mail-modal" id="mailModal" role="dialog" aria-modal="true" aria-labelledby="mailTitle" hidden>
+  <div class="mail-backdrop" data-close></div>
+  <div class="mail-box">
+    <button class="mail-close" type="button" data-close aria-label="Close">&times;</button>
+    <h3 class="mail-title" id="mailTitle">Send an email</h3>
+    <p class="mail-addr" id="mailAddr"></p>
+    <p class="mail-subject" id="mailSubject"></p>
+    <div class="mail-actions">
+      <a class="btn-gold" id="mailGmail" href="#" target="_blank" rel="noopener">Open in Gmail</a>
+      <a class="btn-navy" id="mailApp" href="#">Open email app</a>
+      <button class="btn-outline-navy" id="mailCopy" type="button">Copy email address</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const navToggle = document.getElementById('navToggle');
+
+  window.addEventListener('scroll', () => {
+    navbar.style.boxShadow = window.scrollY > 40 ? '0 2px 20px rgba(0,0,0,0.3)' : 'none';
+  });
+
+  /* ---------- Mobile menu ---------- */
+  function closeNav() {
+    navbar.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Open menu');
+  }
+  navToggle.addEventListener('click', () => {
+    const open = navbar.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+
+  /* ---------- Page switching (with working back button + shareable links) ---------- */
+  function pageFromHash() {
+    const name = location.hash.replace('#', '');
+    return document.getElementById('page-' + name) ? name : 'home';
+  }
+
+  function showPage(name) {
+    if (!document.getElementById('page-' + name)) name = 'home';
+    document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + name));
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.toggle('active', a.dataset.page === name);
+    });
+    closeNav();
+    const root = document.documentElement;
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    root.style.scrollBehavior = '';
+  }
+
+  window.addEventListener('popstate', () => showPage(pageFromHash()));
+
+  /* ---------- Email popup ---------- */
+  const modal = document.getElementById('mailModal');
+  const mailTitle = document.getElementById('mailTitle');
+  const mailAddr = document.getElementById('mailAddr');
+  const mailSubject = document.getElementById('mailSubject');
+  const mailGmail = document.getElementById('mailGmail');
+  const mailApp = document.getElementById('mailApp');
+  const mailCopy = document.getElementById('mailCopy');
+  let lastFocus = null;
+  let currentAddr = '';
+
+  function contactName(link) {
+    if (link.dataset.name) return link.dataset.name;
+    const card = link.closest('.board-card');
+    if (card) return card.querySelector('.board-name').textContent.trim();
+    const row = link.closest('tr');
+    if (row && row.children[1]) return row.children[1].textContent.trim();
+    return '';
+  }
+
+  function openMail(link) {
+    const href = link.getAttribute('href');
+    const raw = href.slice(7);
+    const q = raw.indexOf('?');
+    currentAddr = decodeURIComponent(q === -1 ? raw : raw.slice(0, q));
+    const subject = q === -1 ? '' : (new URLSearchParams(raw.slice(q + 1)).get('subject') || '');
+    const name = contactName(link);
+
+    mailTitle.textContent = name ? 'Email ' + name : 'Send an email';
+    mailAddr.textContent = currentAddr;
+    mailSubject.textContent = subject ? 'Subject: ' + subject : '';
+    mailSubject.style.display = subject ? '' : 'none';
+    mailGmail.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(currentAddr) +
+      (subject ? '&su=' + encodeURIComponent(subject) : '');
+    mailApp.href = href;
+    mailCopy.textContent = 'Copy email address';
+
+    lastFocus = link;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    mailGmail.focus();
+  }
+
+  function closeMail() {
+    if (modal.hidden) return;
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+
+  function copied() {
+    mailCopy.textContent = 'Copied';
+    setTimeout(() => { mailCopy.textContent = 'Copy email address'; }, 2000);
+  }
+  mailCopy.addEventListener('click', () => {
+    const fallback = () => {
+      const t = document.createElement('textarea');
+      t.value = currentAddr;
+      t.setAttribute('readonly', '');
+      t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t);
+      t.select();
+      try { document.execCommand('copy'); copied(); } catch (e) { mailCopy.textContent = 'Select the address above to copy'; }
+      document.body.removeChild(t);
+    };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(currentAddr).then(copied, fallback);
+    } else {
+      fallback();
+    }
+  });
+
+  mailGmail.addEventListener('click', () => setTimeout(closeMail, 300));
+  mailApp.addEventListener('click', () => setTimeout(closeMail, 300));
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeMail));
+
+  /* ---------- One click handler for every button/link on the site ---------- */
+  document.addEventListener('click', e => {
+    const pageLink = e.target.closest('a[data-page]');
+    if (pageLink) {
+      e.preventDefault();
+      const name = pageLink.dataset.page;
+      if (location.hash !== '#' + name) history.pushState(null, '', '#' + name);
+      showPage(name);
+      return;
+    }
+    const mailLink = e.target.closest('a[href^="mailto:"]');
+    if (mailLink && !modal.contains(mailLink)) {
+      e.preventDefault();
+      openMail(mailLink);
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeMail(); closeNav(); }
+    if (e.key === 'Tab' && !modal.hidden) {
+      const items = modal.querySelectorAll('button, a[href]');
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  /* Open the right page if someone lands on a link like /#sponsorship */
+  if (location.hash) showPage(pageFromHash());
+</script>
+</body>
+</html>
